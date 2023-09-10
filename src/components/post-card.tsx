@@ -16,7 +16,7 @@ export default function PostCard({
   content: string
 }) {
   return (
-    <Card className="max-w-[340px]">
+    <Card className="shadow-none bg-transparent hover:bg-slate-950 transition border-b rounded-none border-white/20 cursor-pointer p-2">
       <CardHeader className="justify-between">
         <div className="flex gap-x-2">
           <Link href={`/${username}`}>
@@ -28,7 +28,7 @@ export default function PostCard({
           </div>
         </div>
       </CardHeader>
-      <CardBody className="px-3 py-0 text-small text-default-600">
+      <CardBody className="px-3 py-0 text-xs text-default-600">
         <p>
           {content}
         </p>

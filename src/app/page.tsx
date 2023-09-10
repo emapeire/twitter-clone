@@ -1,11 +1,13 @@
 import { AuthButtonServer } from '@/components/auth-button-server'
-import PostCard from '@/components/post-card'
+import { ComposePost } from '@/components/compose-post'
+import { PostList } from '@/components/post-list'
+import { type Database } from '@/types/database'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
 export default async function Home() {
-  const supabase = createServerComponentClient({ cookies })
+  const supabase = createServerComponentClient<Database>({ cookies })
   const { data: { session } } = await supabase.auth.getSession()
 
   if (session === null) {
@@ -17,31 +19,12 @@ export default async function Home() {
     .select('*, users(*)')
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex min-h-screen flex-col items-center justify-between">
       <AuthButtonServer />
-      {
-        posts?.map(post => {
-          const {
-            id,
-            users,
-            content
-          } = post
-          const {
-            user_name: username,
-            name,
-            avatar_url: avatar
-          } = users
-          return (
-            <PostCard
-              key={id}
-              username={username}
-              name={name}
-              avatar={avatar}
-              content={content}
-            />
-          )
-        })
-      }
+      <section className='max-w-[600px] w-full mx-auto border-l border-r border-white/20 min-h-screen'>
+        <ComposePost avatar={session.user?.user_metadata?.avatar_url} />
+        <PostList posts={posts} />
+      </section>
     </main>
   )
 }

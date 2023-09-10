@@ -1,2 +1,3 @@
 tailwind.config.ts
 .eslintrc.json
+next.config.js
